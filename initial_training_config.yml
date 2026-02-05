@@ -1,0 +1,39 @@
+# Configure the model
+model:
+  type: UNet
+  args:
+    in_channels: 3
+    out_channels: 1
+
+# Configure the dataset (without transforms)
+dataset:
+  training:
+    images_root_dir: .\\train_data
+    labels_root_dir: .\\train_data\\laneseg_label_w16
+
+# Configure transformations
+transformations:
+  training:
+    - resize:
+        size: !!python/tuple [256, 256]
+
+# Configuring the training pipeline:
+training_params:
+  optimizer: Adam
+  scheduler: CosineAnnealingScheduler
+  learning_rate: 0.01
+  epochs: 100
+  batch_size: 32
+  device: null # if null it will be set automatically
+  early_stopping: null # if null there will be no early stopping applied
+  num_workers: 8
+  no_validation: true
+  validation_fraction: .2
+  # TODO: Implement proper warmup logic
+  # warmup:
+  #   steps: 0
+  #   unit: 'epoch' # Can be 'epoch' or 'iteration'
+
+output_path: .\\out\\
+
+

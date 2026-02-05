@@ -1,0 +1,7 @@
+.venv
+__pycache__
+*.ipynb
+*.onnx*
+train_data
+out
+*.egg-info

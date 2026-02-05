@@ -32,8 +32,6 @@ class Trainer:
             )
             validation_dataset, training_dataset = random_split(
                 training_dataset,
-
-                
                 [validation_fraction, 1 - validation_fraction],
                 generator=generator,
             )

@@ -7,13 +7,15 @@ from .to_tensor import MaskAwareToTensor
 
 
 class MaskTransform(Enum):
-    RANDOM_CROP = 'random_crop'
-    RESIZE = 'resize'
+    RANDOM_CROP = "random_crop"
+    RESIZE = "resize"
+
 
 MASK_TRANSFORM_REGISTRY: dict[str, BaseMaskAwareTransform] = {
     MaskTransform.RANDOM_CROP: MaskAwareRandomCrop,
     MaskTransform.RESIZE: MaskAwareResize,
 }
+
 
 def build_transforms(cfg):
     transforms = [MaskAwareToTensor()]

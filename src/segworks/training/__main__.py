@@ -26,7 +26,7 @@ def main(pipeline: dict[str, Any]):
         training_params=training_args,
         training_dataset=dataset,
         validation_dataset=validation_dataset,
-        validation_fraction=validation_fraction
+        validation_fraction=validation_fraction,
     )
 
     logger.info("Starting training")

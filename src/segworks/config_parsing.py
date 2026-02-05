@@ -18,9 +18,11 @@ SCHEDULERS = {
     "CosineAnnealingScheduler": CosineAnnealingLR,
 }
 
+
 def load_config(path):
     with open(path) as f:
         return yaml.load(f, Loader=yaml.FullLoader)
+
 
 def build_optimizer(model, cfg):
     return OPTIMIZERS[cfg["optimizer"]](
@@ -28,11 +30,13 @@ def build_optimizer(model, cfg):
         lr=cfg["learning_rate"],
     )
 
+
 def build_scheduler(optimizer, cfg):
     return SCHEDULERS[cfg["scheduler"]](
         optimizer,
         T_max=cfg["epochs"],
     )
+
 
 def build_training_args(cfg) -> TrainingArgs:
     valid_fields = {f.name for f in fields(TrainingArgs)}
@@ -61,12 +65,11 @@ def build_pipeline(config_path):
         "scheduler": scheduler,
         "training_args": training_args,
         "output_path": output_path,
-        "validation_fraction": cfg["training_params"].get("validation_fraction", None)
+        "validation_fraction": cfg["training_params"].get("validation_fraction", None),
     }
 
+
 if __name__ == "__main__":
-    config_file_path = r'.\initial_training_config.yml'
+    config_file_path = r".\initial_training_config.yml"
 
     print(build_pipeline(config_file_path))
-
-

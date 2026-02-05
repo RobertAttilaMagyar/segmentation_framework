@@ -3,6 +3,8 @@ from collections.abc import Iterable
 import torch
 import torch.nn as nn
 
+from .model import Model
+
 
 class EncoderBlock(nn.Module):
     def __init__(self, in_dims: int, out_dims: int, batch_norm: bool = True):
@@ -69,7 +71,7 @@ class BottleNeck(nn.Module):
         return self.layers(x)
 
 
-class UNet(nn.Module):
+class UNet(Model):
     def __init__(
         self,
         in_channels: int = 3,

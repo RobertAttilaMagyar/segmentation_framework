@@ -9,7 +9,10 @@ class Model(nn.Module):
 
     def export(format: Literal["onnx"]):
         match format:
-            case 'onnx':
+            case "onnx":
+
+
+                
                 raise NotImplementedError()
             case _:
                 raise ValueError(f"Unsupported export format {format}")

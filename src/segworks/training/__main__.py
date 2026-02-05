@@ -38,7 +38,9 @@ def main(pipeline: dict[str, Any]):
 
     # Output handling
     cfg = pipeline.get("raw_config", None)
-    output_dir = Path(cfg["output_path"]) if cfg and "output_path" in cfg else Path("./out")
+    output_dir = (
+        Path(cfg["output_path"]) if cfg and "output_path" in cfg else Path("./out")
+    )
     output_dir.mkdir(parents=True, exist_ok=True)
 
     output_path = output_dir / "model_final.pt"

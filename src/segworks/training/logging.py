@@ -7,7 +7,9 @@ def configure_logging(output_dir: Path) -> logging.Logger:
 
     log_file = output_dir / "train.log"
 
-    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(name)s - %(message)s")
+    formatter = logging.Formatter(
+        "%(asctime)s - %(levelname)s - %(name)s - %(message)s"
+    )
 
     logger = logging.getLogger()  # root logger
     logger.setLevel(logging.INFO)

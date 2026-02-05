@@ -51,7 +51,9 @@ class SegmentationMaskData(Dataset):
         # consider the masks as well in geometric transforms
         self.transforms = transforms or []
         for mask_path in labels_root_path.rglob("*.png"):
-            image_path = images_root_path / Path(*mask_path.parts[-3:]).with_suffix(".jpg")
+            image_path = images_root_path / Path(*mask_path.parts[-3:]).with_suffix(
+                ".jpg"
+            )
             if (pair := ImageMaskPair(image_path, mask_path)).exists:
                 self.path_pairs.append(pair)
 

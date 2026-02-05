@@ -22,7 +22,9 @@ class Evaluator:
         num_workers: int | None = None,
     ):
         if num_classes != 2:
-            raise NotImplementedError("Current implementation only supports binary segmentation")
+            raise NotImplementedError(
+                "Current implementation only supports binary segmentation"
+            )
         self.loader = DataLoader(
             dataset=validation_dataset,
             shuffle=False,
@@ -45,31 +47,50 @@ class Evaluator:
 
     @property
     def dice_score(self):
-        assert self.evaluated, "Performance metric can only be accessed after evaluation"
+        assert self.evaluated, (
+            "Performance metric can only be accessed after evaluation"
+        )
         return (
             2
             * self.confusion_matrix[0, 0]
-            / (torch.sum(self.confusion_matrix[:, 0]) + torch.sum(self.confusion_matrix[0, :]))
+            / (
+                torch.sum(self.confusion_matrix[:, 0])
+                + torch.sum(self.confusion_matrix[0, :])
+            )
         ).item() or 0
 
     @property
     def precision(self):
-        assert self.evaluated, "Performance metric can only be accessed after evaluation"
-        return (self.confusion_matrix[0, 0] / torch.sum(self.confusion_matrix[:, 0])).item() or 0
+        assert self.evaluated, (
+            "Performance metric can only be accessed after evaluation"
+        )
+        return (
+            self.confusion_matrix[0, 0] / torch.sum(self.confusion_matrix[:, 0])
+        ).item() or 0
 
     @property
     def recall(self):
-        assert self.evaluated, "Performance metric can only be accessed after evaluation"
-        return (self.confusion_matrix[0, 0] / torch.sum(self.confusion_matrix[0, :])).item() or 0
+        assert self.evaluated, (
+            "Performance metric can only be accessed after evaluation"
+        )
+        return (
+            self.confusion_matrix[0, 0] / torch.sum(self.confusion_matrix[0, :])
+        ).item() or 0
 
     @property
     def f1_score(self):
-        assert self.evaluated, "Performance metric can only be accessed after evaluation"
-        return (2 * (self.precision * self.recall) / (self.precision + self.recall)) or 0
+        assert self.evaluated, (
+            "Performance metric can only be accessed after evaluation"
+        )
+        return (
+            2 * (self.precision * self.recall) / (self.precision + self.recall)
+        ) or 0
 
     @property
     def iou(self) -> float:
-        assert self.evaluated, "Performance metric can only be accessed after evaluation"
+        assert self.evaluated, (
+            "Performance metric can only be accessed after evaluation"
+        )
         return (
             self.confusion_matrix[0, 0]
             / (
@@ -80,7 +101,9 @@ class Evaluator:
         ) or 0
 
     @staticmethod
-    def _calc_confusion_matrix(output: torch.Tensor, gt_mask: torch.Tensor) -> torch.Tensor:
+    def _calc_confusion_matrix(
+        output: torch.Tensor, gt_mask: torch.Tensor
+    ) -> torch.Tensor:
         output = output.flatten()
         gt_mask = gt_mask.flatten()
         TP = torch.sum((output == 1) & (gt_mask == 1))
@@ -125,7 +148,9 @@ class Evaluator:
         return self.to_dict()
 
     def to_dict(self) -> dict[EvaluationMetric, float]:
-        assert self.evaluated, "Performance metrics can only be accessed after evaluation"
+        assert self.evaluated, (
+            "Performance metrics can only be accessed after evaluation"
+        )
 
         return {
             EvaluationMetric.DICE: self.dice_score,

@@ -54,7 +54,9 @@ class Trainer:
 
         if validation_dataset is not None:
             logger.info(f"Number of validation images: {len(validation_dataset)}")
-            self.evaluator = Evaluator(validation_dataset, num_workers=training_params.num_workers)
+            self.evaluator = Evaluator(
+                validation_dataset, num_workers=training_params.num_workers
+            )
 
         # For fp16 training
         self.use_amp = training_params.device.type == "cuda"
@@ -107,7 +109,9 @@ class Trainer:
                 running_loss = 0.0
 
                 optimizer.zero_grad()
-                for iteration, (images, masks) in enumerate(tqdm.tqdm(self.train_loader), start=1):
+                for iteration, (images, masks) in enumerate(
+                    tqdm.tqdm(self.train_loader), start=1
+                ):
                     images = images.to(self.device)
                     masks = masks.to(self.device)
 
@@ -168,6 +172,8 @@ class Trainer:
                         break
 
             logger.info("Restoring best model weights")
-            model.load_state_dict(torch.load(best_weights_path, map_location=self.device))
+            model.load_state_dict(
+                torch.load(best_weights_path, map_location=self.device)
+            )
 
         return model

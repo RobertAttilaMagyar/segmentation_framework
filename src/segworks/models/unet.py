@@ -87,7 +87,9 @@ class UNet(nn.Module):
 
         self.down_modules = nn.ModuleList()
         self.down_modules.append(EncoderBlock(in_channels, inter_channel_counts[0]))
-        for c1, c2 in zip(inter_channel_counts[:-1], inter_channel_counts[1:], strict=False):
+        for c1, c2 in zip(
+            inter_channel_counts[:-1], inter_channel_counts[1:], strict=False
+        ):
             self.down_modules.append(EncoderBlock(c1, c2))
 
         self.bottleneck = BottleNeck(

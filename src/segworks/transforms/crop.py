@@ -5,7 +5,15 @@ from ._base import BaseMaskAwareTransform
 
 
 class MaskAwareRandomCrop(BaseMaskAwareTransform, transforms.RandomCrop):
-    def __init__(self, *, size, padding=None, pad_if_needed=False, fill=0, padding_mode="constant"):
+    def __init__(
+        self,
+        *,
+        size,
+        padding=None,
+        pad_if_needed=False,
+        fill=0,
+        padding_mode="constant",
+    ):
         super().__init__(size, padding, pad_if_needed, fill, padding_mode)
 
     def forward(self, img, mask):

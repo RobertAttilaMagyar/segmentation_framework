@@ -5,9 +5,14 @@ import ijson
 from segworks.data_utils import ImageMaskPair, SegmentationDataset, register_dataset
 
 
-@register_dataset('brisc')
+@register_dataset("brisc")
 class BRISCData(SegmentationDataset):
-    def __init__(self, manifest_path: str | Path, transforms=None, filters: dict[str, str] | None = None):
+    def __init__(
+        self,
+        manifest_path: str | Path,
+        transforms=None,
+        filters: dict[str, str] | None = None,
+    ):
         super().__init__(transforms)
 
         self.manifest_path = Path(manifest_path)
@@ -39,13 +44,16 @@ class BRISCData(SegmentationDataset):
 def build_brisc_dataset(cfg, transforms=None) -> BRISCData:
     if "manifest_path" not in cfg:
         raise KeyError("'manifest_path' is missing from configuration")
-    return BRISCData(cfg["manifest_path"], filters = cfg['filters'])
+    return BRISCData(cfg["manifest_path"], filters=cfg["filters"])
+
 
 if __name__ == "__main__":
     from segworks.config_parsing import build_pipeline
 
-    pipeline = build_pipeline(r'C:\Users\rober\Desktop\projects\lane_detection\examples\brisc\brisc_config.yml')
-    print(len(pipeline['training_dataset']))
-    print(len(pipeline['validation_dataset']))
+    pipeline = build_pipeline(
+        r"C:\Users\rober\Desktop\projects\lane_detection\examples\brisc\brisc_config.yml"
+    )
+    print(len(pipeline["training_dataset"]))
+    print(len(pipeline["validation_dataset"]))
 
-    pipeline['validation_dataset'].path_pairs[10].visualize()
+    pipeline["validation_dataset"].path_pairs[10].visualize()

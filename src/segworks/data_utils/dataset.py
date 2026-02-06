@@ -42,7 +42,6 @@ class ImageMaskPair:
         opacity : int
             Opacity of overlays (0–255).
         """
-        
 
         # Load image + mask as PIL
         img = Image.open(self.image_path).convert("RGBA")
@@ -79,13 +78,17 @@ class ImageMaskPair:
         plt.axis("off")
         plt.show()
 
+
 _DATASET_REGISTRY = {}
+
 
 def register_dataset(name: str):
     def decorator(cls):
         _DATASET_REGISTRY[name] = cls
         return cls
+
     return decorator
+
 
 class SegmentationDataset(Dataset):
     def __init__(self, transforms: list[Callable] | None = None):
@@ -94,9 +97,8 @@ class SegmentationDataset(Dataset):
         self.transforms = transforms or []
 
     @abstractmethod
-    def obtain_pairs(self)->None:
-        ...
-    
+    def obtain_pairs(self) -> None: ...
+
     def __getitem__(self, index):
         img, mask = self.path_pairs[index].values
 
@@ -108,9 +110,15 @@ class SegmentationDataset(Dataset):
     def __len__(self):
         return len(self.path_pairs)
 
-@register_dataset('folder')
+
+@register_dataset("folder")
 class FolderDataset(SegmentationDataset):
-    def __init__(self, labels_root_path: str | Path, images_root_path: str | Path, transforms: list[Callable] | None = None):
+    def __init__(
+        self,
+        labels_root_path: str | Path,
+        images_root_path: str | Path,
+        transforms: list[Callable] | None = None,
+    ):
         super().__init__(transforms)
         self.labels_root_path = Path(labels_root_path)
         self.images_root_path = Path(images_root_path)
@@ -123,7 +131,7 @@ class FolderDataset(SegmentationDataset):
                 self.path_pairs.append(pair)
 
 
-@register_dataset('lane_detection')
+@register_dataset("lane_detection")
 class LaneDetectionDataset(SegmentationDataset):
     def __init__(
         self,
@@ -138,8 +146,8 @@ class LaneDetectionDataset(SegmentationDataset):
 
     def obtain_pairs(self):
         for mask_path in self.labels_root_path.rglob("*.png"):
-            image_path = self.images_root_path / Path(*mask_path.parts[-3:]).with_suffix(
-                ".jpg"
-            )
+            image_path = self.images_root_path / Path(
+                *mask_path.parts[-3:]
+            ).with_suffix(".jpg")
             if (pair := ImageMaskPair(image_path, mask_path)).exists:
                 self.path_pairs.append(pair)

@@ -17,7 +17,7 @@ __all__ = [
 
 
 def build_dataset(cfg, transforms=None) -> SegmentationDataset:
-    dataset_type = cfg.get("type", "folder") # default
+    dataset_type = cfg.get("type", "folder")  # default
     params = cfg.get("params", {})
 
     if dataset_type not in _DATASET_REGISTRY:
@@ -25,4 +25,3 @@ def build_dataset(cfg, transforms=None) -> SegmentationDataset:
 
     cls = _DATASET_REGISTRY[dataset_type]
     return cls(transforms=transforms, **params)
-

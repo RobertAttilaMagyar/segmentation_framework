@@ -53,11 +53,15 @@ def build_pipeline(config_path):
         if "training" in cfg["transformations"]:
             train_transforms = build_transforms(cfg["transformations"]["training"])
         if "validation" in cfg["transformations"]:
-           validation_transforms = build_transforms(cfg["transformations"]["validation"])
+            validation_transforms = build_transforms(
+                cfg["transformations"]["validation"]
+            )
     if "training" in cfg["dataset"]:
         training_dataset = build_dataset(cfg["dataset"]["training"], train_transforms)
     if "validation" in cfg["dataset"]:
-        validation_dataset = build_dataset(cfg["dataset"]["validation"], validation_transforms)
+        validation_dataset = build_dataset(
+            cfg["dataset"]["validation"], validation_transforms
+        )
     model = build_model(cfg["model"])
 
     training_args = build_training_args(cfg["training_params"])
